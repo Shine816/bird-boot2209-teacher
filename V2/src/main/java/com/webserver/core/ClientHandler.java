@@ -40,6 +40,12 @@ public class ClientHandler implements Runnable{
             String line = builder.toString().trim();
             System.out.println("请求行:"+line);
 
+            String method;//请求方式
+            String uri;//抽象路径
+            String protocol;//协议版本
+            System.out.println("method:"+method);
+            System.out.println("uri:"+uri);
+            System.out.println("protocol:"+protocol);
 
 
             //2处理请求

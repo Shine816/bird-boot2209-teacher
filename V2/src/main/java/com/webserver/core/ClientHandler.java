@@ -39,10 +39,11 @@ public class ClientHandler implements Runnable{
             }
             String line = builder.toString().trim();
             System.out.println("请求行:"+line);
-
-            String method;//请求方式
-            String uri;//抽象路径
-            String protocol;//协议版本
+            //将请求行内容按照空格拆分为三部分，并赋值给下面三个变量
+            String[]data = line.split("\\s");
+            String method = data[0];//请求方式
+            String uri = data[1];//抽象路径
+            String protocol = data[2];//协议版本
             System.out.println("method:"+method);
             System.out.println("uri:"+uri);
             System.out.println("protocol:"+protocol);

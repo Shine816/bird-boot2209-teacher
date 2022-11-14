@@ -60,31 +60,18 @@ public class ClientHandler implements Runnable{
                 (CRLF)
                 1011101010101010101......
              */
-            OutputStream out = socket.getOutputStream();
             //3.1发送状态行
-            String line = "HTTP/1.1 200 OK";
-            byte[] data = line.getBytes(StandardCharsets.ISO_8859_1);
-            out.write(data);
-            out.write(13);//发送回车符
-            out.write(10);//发送换行符
+            println("HTTP/1.1 200 OK");
 
             //3.2发送响应头
-            line = "Content-Type: text/html";
-            data = line.getBytes(StandardCharsets.ISO_8859_1);
-            out.write(data);
-            out.write(13);//发送回车符
-            out.write(10);//发送换行符
+            println("Content-Type: text/html");
+            println("Content-Length: "+file.length());
 
-            line = "Content-Length: "+file.length();
-            data = line.getBytes(StandardCharsets.ISO_8859_1);
-            out.write(data);
-            out.write(13);//发送回车符
-            out.write(10);//发送换行符
+            println("");//单独发送空行(回车+换行)表示响应头部分发送完毕
 
-            out.write(13);//发送回车符
-            out.write(10);//发送换行符
 
             //3.3发送响应正文(file表示的文件内容)
+            OutputStream out = socket.getOutputStream();
             FileInputStream fis = new FileInputStream(file);
 //            FileOutputStream fos = new FileOutputStream("xxx.xx");
             int len;//每次读取的字节量
@@ -107,6 +94,14 @@ public class ClientHandler implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+
+    private void println(String line) throws IOException {
+        OutputStream out = socket.getOutputStream();
+        byte[] data = line.getBytes(StandardCharsets.ISO_8859_1);
+        out.write(data);
+        out.write(13);//发送回车符
+        out.write(10);//发送换行符
     }
 
 

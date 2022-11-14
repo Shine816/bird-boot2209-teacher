@@ -1,4 +1,4 @@
-package com.webserver.http;
+package http;
 
 import java.io.File;
 import java.io.FileInputStream;

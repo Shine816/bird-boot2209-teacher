@@ -1,5 +1,6 @@
 package com.webserver.core;
 
+import http.EmptyRequestException;
 import http.HttpServletRequest;
 import http.HttpServletResponse;
 
@@ -38,6 +39,8 @@ public class ClientHandler implements Runnable{
 
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (EmptyRequestException e) {
+
         } finally {
             try {
                 //一问一答后断开TCP连接

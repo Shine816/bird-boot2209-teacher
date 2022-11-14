@@ -48,9 +48,19 @@ public class ClientHandler implements Runnable{
             );
             //定位target/classes/static目录(SpringBoot中存放所有静态资源的目录)
             File staticDir = new File(root,"static");
-            //定位target/classes/static目录中的"index.html"
-            File file = new File(staticDir,"index.html");
 
+           //定位target/classes/static目录中的"index.html"
+//            File file = new File(staticDir,"index.html");
+            /*
+                index.html
+                classtable.html
+                                  static目录
+                                     v
+                http://localhost:8080/index.html
+                http://localhost:8080/classtable.html
+             */
+            String path = request.getUri();
+            File file = new File(staticDir,path);
 
             //3发送响应
             /*

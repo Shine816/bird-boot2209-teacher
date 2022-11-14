@@ -26,33 +26,40 @@ public class HttpServletRequest {
 
     public HttpServletRequest(Socket socket) throws IOException {
         this.socket = socket;
-
         //1.1:读取请求行
+        parseRequestLine();
+        //1.2解析消息头
+        parseHeaders();
+        //1.3解析消息正文
+        parseContent();
+
+    }
+    //解析请求行
+    private void parseRequestLine() throws IOException {
         String line = readLine();
         System.out.println("请求行:" + line);
         String[] data = line.split("\\s");
         method = data[0];
         uri = data[1];
         protocol = data[2];
-
-        //1.2解析消息头
+    }
+    //解析消息头
+    private void parseHeaders() throws IOException {
         while (true) {
-            line = readLine();
+            String line = readLine();
             if (line.isEmpty()) {
                 break;
             }
             System.out.println("消息头:" + line);
-            data = line.split(":\\s");
+            String[] data = line.split(":\\s");
             headers.put(data[0].toLowerCase(), data[1]);
         }
         System.out.println("所有消息头:" + headers);
     }
-    //解析请求行
-    private void parseRequestLine(){}
-    //解析消息头
-    private void parseHeaders(){}
     //解析消息正文
-    private void parseContent(){}
+    private void parseContent(){
+
+    }
 
     /**
      * 读取客户端发送过来的一行字符串

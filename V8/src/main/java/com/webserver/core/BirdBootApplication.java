@@ -19,15 +19,15 @@ public class BirdBootApplication {
 
     public void start(){
         try {
-
-            System.out.println("等待客户端连接...");
-            Socket socket = serverSocket.accept();
-            System.out.println("一个客户端连接了!");
-            //启动线程来与该客户端交互
-            ClientHandler handler = new ClientHandler(socket);
-            Thread t = new Thread(handler);
-            t.start();
-
+            while(true) {
+                System.out.println("等待客户端连接...");
+                Socket socket = serverSocket.accept();
+                System.out.println("一个客户端连接了!");
+                //启动线程来与该客户端交互
+                ClientHandler handler = new ClientHandler(socket);
+                Thread t = new Thread(handler);
+                t.start();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

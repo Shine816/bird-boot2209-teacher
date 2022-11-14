@@ -1,6 +1,7 @@
 package com.webserver.core;
 
 import com.webserver.http.HttpServletRequest;
+import com.webserver.http.HttpServletResponse;
 
 import java.io.*;
 import java.net.Socket;
@@ -30,54 +31,29 @@ public class ClientHandler implements Runnable{
         try {
             //1解析请求
             HttpServletRequest request = new HttpServletRequest(socket);
+            HttpServletResponse response = new HttpServletResponse(socket);
 
             //2处理请求
             File root = new File(
                 ClientHandler.class.getClassLoader().getResource(".").toURI()
             );
             File staticDir = new File(root,"static");
-            /*
-                http://localhost:8088/index.html
-                http://localhost:8088/classtable.html
 
-                http://localhost:8088/index123.html     //static下没有index123.html
-                http://localhost:8088                   //抽象路径:"/".这时File file = new File(staticDir,path)行会定位到static目录本身
-                上述两种情况都会导致发送响应正文时使用文件输入流读取时报错
-                1：不存在的文件会出现系统找不到指定的文件
-                2：读取的是目录会导致出现无法访问
-             */
             String path = request.getUri();
             File file = new File(staticDir,path);
 
-            int statusCode;//状态代码
-            String statusReason;//状态描述
             if(file.isFile()){//判断请求的文件真实存在且确定是一个文件(不是目录)
-                statusCode = 200;
-                statusReason = "OK";
+                response.setContentFile(file);
+
             }else{//404情况
-                statusCode = 404;
-                statusReason = "NotFound";
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
                 file = new File(staticDir,"404.html");
+                response.setContentFile(file);
             }
 
             //3发送响应
-            //3.1发送状态行
-            println("HTTP/1.1" + " " + statusCode + " " + statusReason);
-
-            //3.2发送响应头
-            println("Content-Type: text/html");
-            println("Content-Length: "+file.length());
-            println("");
-
-
-            //3.3发送响应正文(file表示的文件内容)
-            OutputStream out = socket.getOutputStream();
-            FileInputStream fis = new FileInputStream(file);
-            int len;
-            byte[] buf = new byte[1024*10];
-            while((len = fis.read(buf))!=-1){
-                out.write(buf,0,len);
-            }
+            response.response();
 
 
         } catch (IOException e) {
@@ -93,16 +69,6 @@ public class ClientHandler implements Runnable{
             }
         }
     }
-
-    private void println(String line) throws IOException {
-        OutputStream out = socket.getOutputStream();
-        byte[] data = line.getBytes(StandardCharsets.ISO_8859_1);
-        out.write(data);
-        out.write(13);//发送回车符
-        out.write(10);//发送换行符
-    }
-
-
 
 }
 

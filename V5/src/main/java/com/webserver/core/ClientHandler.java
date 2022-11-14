@@ -2,11 +2,10 @@ package com.webserver.core;
 
 import com.webserver.http.HttpServletRequest;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.Socket;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -54,6 +53,46 @@ public class ClientHandler implements Runnable{
 
 
             //3发送响应
+            /*
+                HTTP/1.1 200 OK(CRLF)
+                Content-Type: text/html(CRLF)
+                Content-Length: 2546(CRLF)
+                (CRLF)
+                1011101010101010101......
+             */
+            OutputStream out = socket.getOutputStream();
+            //3.1发送状态行
+            String line = "HTTP/1.1 200 OK";
+            byte[] data = line.getBytes(StandardCharsets.ISO_8859_1);
+            out.write(data);
+            out.write(13);//发送回车符
+            out.write(10);//发送换行符
+
+            //3.2发送响应头
+            line = "Content-Type: text/html";
+            data = line.getBytes(StandardCharsets.ISO_8859_1);
+            out.write(data);
+            out.write(13);//发送回车符
+            out.write(10);//发送换行符
+
+            line = "Content-Length: "+file.length();
+            data = line.getBytes(StandardCharsets.ISO_8859_1);
+            out.write(data);
+            out.write(13);//发送回车符
+            out.write(10);//发送换行符
+
+            out.write(13);//发送回车符
+            out.write(10);//发送换行符
+
+            //3.3发送响应正文(file表示的文件内容)
+            FileInputStream fis = new FileInputStream(file);
+//            FileOutputStream fos = new FileOutputStream("xxx.xx");
+            int len;//每次读取的字节量
+            byte[] buf = new byte[1024*10];//10kb
+            while((len = fis.read(buf))!=-1){
+//                fos.write(buf,0,len);
+                out.write(buf,0,len);
+            }
 
 
         } catch (IOException e) {

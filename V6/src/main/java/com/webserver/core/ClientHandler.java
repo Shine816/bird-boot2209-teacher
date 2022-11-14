@@ -49,9 +49,20 @@ public class ClientHandler implements Runnable{
             String path = request.getUri();
             File file = new File(staticDir,path);
 
+            int statusCode;//状态代码
+            String statusReason;//状态描述
+            if(file.isFile()){//判断请求的文件真实存在且确定是一个文件(不是目录)
+                statusCode = 200;
+                statusReason = "OK";
+            }else{//404情况
+                statusCode = 404;
+                statusReason = "NotFound";
+                file = new File(staticDir,"404.html");
+            }
+
             //3发送响应
             //3.1发送状态行
-            println("HTTP/1.1 200 OK");
+            println("HTTP/1.1" + " " + statusCode + " " + statusReason);
 
             //3.2发送响应头
             println("Content-Type: text/html");

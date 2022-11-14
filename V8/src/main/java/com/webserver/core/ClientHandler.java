@@ -34,7 +34,7 @@ public class ClientHandler implements Runnable{
             HttpServletResponse response = new HttpServletResponse(socket);
 
             //2处理请求
-            DispatcherServlet servlet = new DispatcherServlet();
+            DispatcherServlet servlet = DispatcherServlet.getInstance();
             servlet.service(request,response);
 
             //3发送响应

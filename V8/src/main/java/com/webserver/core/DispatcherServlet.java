@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
  * 的操作。
  */
 public class DispatcherServlet {
+    private static DispatcherServlet instance = new DispatcherServlet();
     private static File root;
     private static File staticDir;
     static {
@@ -31,6 +32,11 @@ public class DispatcherServlet {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    private DispatcherServlet(){}
+    public static DispatcherServlet getInstance(){
+        return instance;
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response){

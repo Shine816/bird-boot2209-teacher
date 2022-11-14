@@ -34,15 +34,22 @@ public class HttpServletResponse {
      */
     public void response() throws IOException {
         //3.1发送状态行
-        println("HTTP/1.1" + " " + statusCode + " " + statusReason);
-
+        sendStatusLine();
         //3.2发送响应头
+        sendHeaders();
+        //3.3发送响应正文
+        sendContent();
+    }
+
+    private void sendStatusLine() throws IOException {
+        println("HTTP/1.1" + " " + statusCode + " " + statusReason);
+    }
+    private void sendHeaders() throws IOException {
         println("Content-Type: text/html");
         println("Content-Length: "+contentFile.length());
         println("");
-
-
-        //3.3发送响应正文(file表示的文件内容)
+    }
+    private void sendContent() throws IOException {
         OutputStream out = socket.getOutputStream();
         FileInputStream fis = new FileInputStream(contentFile);
         int len;
@@ -51,6 +58,7 @@ public class HttpServletResponse {
             out.write(buf,0,len);
         }
     }
+
 
     private void println(String line) throws IOException {
         OutputStream out = socket.getOutputStream();

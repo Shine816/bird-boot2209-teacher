@@ -153,4 +153,16 @@ public class HttpServletRequest {
         name = name.toLowerCase();
         return headers.get(name);
     }
+
+    public String getRequestURI() {
+        return requestURI;
+    }
+
+    public String getQueryString() {
+        return queryString;
+    }
+
+    public String getParameter(String name) {
+        return parameters.get(name);
+    }
 }

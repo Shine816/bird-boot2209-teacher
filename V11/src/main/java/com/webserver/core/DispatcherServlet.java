@@ -45,8 +45,7 @@ public class DispatcherServlet {
 
         if(file.isFile()){//判断请求的文件真实存在且确定是一个文件(不是目录)
             response.setContentFile(file);
-            response.addHeader("Content-Type","text/html");
-            response.addHeader("Content-Length",file.length()+"");
+
         }else{//404情况
             response.setStatusCode(404);
             response.setStatusReason("NotFound");

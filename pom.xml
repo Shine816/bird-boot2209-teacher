@@ -22,7 +22,6 @@
         <module>V11</module>
         <module>V12</module>
         <module>V13</module>
-        <module>V13_</module>
     </modules>
 
     <properties>

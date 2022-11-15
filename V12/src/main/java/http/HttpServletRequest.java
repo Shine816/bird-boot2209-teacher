@@ -21,6 +21,11 @@ public class HttpServletRequest {
     private String method;                              //请求方式
     private String uri;                                 //抽象路径
     private String protocol;                            //协议版本
+
+    private String requestURI;                          //uri中请求部分("?"左侧内容)
+    private String queryString;                         //uri中参数部分("?"右侧内容)
+    private Map<String,String> parameter = new HashMap<>();//存每一组参数
+
     //消息头的相关信息
     private Map<String, String> headers = new HashMap<>();      //key:消息头名字 value:对应的值
 
@@ -45,7 +50,27 @@ public class HttpServletRequest {
         method = data[0];
         uri = data[1];
         protocol = data[2];
+        parseURI();//进一步解析uri
     }
+    //进一步解析uri(将请求行中的抽象路径部分进一步解析)
+    private void parseURI(){
+        /*
+            uri有两种情况:
+            1:不含有参数的
+              例如: /index.html
+              直接将uri的值赋值给requestURI即可.
+
+            2:含有参数的
+              例如:/regUser?username=fancq&password=&nickname=chuanqi&age=22
+              将uri中"?"左侧的请求部分赋值给requestURI
+              将uri中"?"右侧的参数部分赋值给queryString
+              将参数部分首先按照"&"拆分出每一组参数，再将每一组参数按照"="拆分为参数名与参数值
+              并将参数名作为key，参数值作为value存入到parameters中。
+
+              如果表单某个输入框没有输入信息，那么存入parameters时对应的值应当保存为空字符串
+         */
+    }
+
     //解析消息头
     private void parseHeaders() throws IOException {
         while (true) {

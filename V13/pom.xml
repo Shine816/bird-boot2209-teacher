@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>V13_</artifactId>
+    <artifactId>V13</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

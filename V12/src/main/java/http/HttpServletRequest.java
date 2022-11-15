@@ -24,7 +24,7 @@ public class HttpServletRequest {
 
     private String requestURI;                          //uri中请求部分("?"左侧内容)
     private String queryString;                         //uri中参数部分("?"右侧内容)
-    private Map<String,String> parameter = new HashMap<>();//存每一组参数
+    private Map<String,String> parameters = new HashMap<>();//存每一组参数
 
     //消息头的相关信息
     private Map<String, String> headers = new HashMap<>();      //key:消息头名字 value:对应的值
@@ -69,6 +69,28 @@ public class HttpServletRequest {
 
               如果表单某个输入框没有输入信息，那么存入parameters时对应的值应当保存为空字符串
          */
+        String[] data = uri.split("\\?");
+        requestURI = data[0];
+        if(data.length>1){//如果拆分出第二项，则说明本次uri包含参数
+            queryString = data[1];//将参数部分赋值给queryString
+//          queryString:username=fancq&password=&nickname=chuanqi&age=22
+            //先将queryString按照"&"拆分出每一组参数
+            String[] paraArray = queryString.split("&");
+//          paraArray:["username=fancq", "password=", "nickname=chuanqi", "age=22"]
+            for(String para : paraArray){
+//                String[] paras = para.split("=");
+//                parameters.put(paras[0], paras.length>1?paras[1]:"");
+
+                String[] paras = para.split("=",2);
+//              paras:["username", "fancq"]或["password", ""]
+                parameters.put(paras[0], paras[1]);
+            }
+        }
+
+        System.out.println("requestURI:"+requestURI);
+        System.out.println("queryString:"+queryString);
+        System.out.println("parameters:"+parameters);
+
     }
 
     //解析消息头

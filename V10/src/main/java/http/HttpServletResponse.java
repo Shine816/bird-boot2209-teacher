@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 响应对象
@@ -17,12 +20,12 @@ import java.nio.charset.StandardCharsets;
 public class HttpServletResponse {
     private Socket socket;
     //状态行相关信息
-    private int statusCode = 200;                   //状态代码
-    private String statusReason = "OK";             //状态描述
+    private int statusCode = 200;                           //状态代码
+    private String statusReason = "OK";                     //状态描述
     //响应头相关信息
-
+    private Map<String,String> headers = new HashMap<>();   //key:响应头名字 value:对应的值
     //响应正文相关信息
-    private File contentFile;                       //响应正文对应的实体文件
+    private File contentFile;                               //响应正文对应的实体文件
 
 
     public HttpServletResponse(Socket socket){
@@ -45,8 +48,21 @@ public class HttpServletResponse {
         println("HTTP/1.1" + " " + statusCode + " " + statusReason);
     }
     private void sendHeaders() throws IOException {
-        println("Content-Type: text/html");
-        println("Content-Length: "+contentFile.length());
+        /*
+            header
+            key             value
+            Content-Type    text/html   Entry
+            Content-Length  245         Entry
+            Server          WebServer   Entry
+            XXX             XXXX        Entry
+         */
+        Set<Map.Entry<String,String>> entrySet = headers.entrySet();
+        for(Map.Entry<String,String> e : entrySet){
+            String key = e.getKey();
+            String value = e.getValue();
+            println(key + ": " + value);
+        }
+
         println("");
     }
     private void sendContent() throws IOException {
@@ -90,5 +106,14 @@ public class HttpServletResponse {
 
     public void setContentFile(File contentFile) {
         this.contentFile = contentFile;
+    }
+
+    /**
+     * 添加一个响应头
+     * @param name  响应头的名字
+     * @param value 响应头对应的值
+     */
+    public void addHeader(String name,String value){
+        headers.put(name,value);
     }
 }

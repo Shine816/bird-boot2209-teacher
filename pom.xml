@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="com.webserver.http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="com.webserver.http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="com.webserver.http://maven.apache.org/POM/4.0.0 com.webserver.http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
@@ -21,6 +21,8 @@
         <module>V10</module>
         <module>V11</module>
         <module>V12</module>
+        <module>V13</module>
+        <module>V13_</module>
     </modules>
 
     <properties>

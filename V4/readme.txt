@@ -3,7 +3,7 @@
 ClientHandler仅关心处理一次HTTP交互的流程控制.
 
 实现:
-1:新建一个包:com.webserver.http
+1:新建一个包:com.webserver.com.webserver.http
 2:在http包下新建类:HttpServletRequest 请求对象
   使用这个类的每一个实例表示客户端发送过来的一个HTTP请求
 3:在HttpServletRequest的构造方法中完成解析请求的工作

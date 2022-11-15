@@ -1,7 +1,7 @@
 package com.webserver.core;
 
-import http.HttpServletRequest;
-import http.HttpServletResponse;
+import com.webserver.http.HttpServletRequest;
+import com.webserver.http.HttpServletResponse;
 
 import java.io.File;
 import java.net.URISyntaxException;

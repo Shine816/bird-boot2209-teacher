@@ -20,4 +20,4 @@
   3.2:在DispatcherServlet处理请求环节调用addHeader存放要发送的响应头即可
 
 
-http://localhost:8088/TeduStore/index.html
+com.webserver.http://localhost:8088/TeduStore/index.html

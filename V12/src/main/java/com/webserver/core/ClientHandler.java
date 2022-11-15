@@ -1,8 +1,8 @@
 package com.webserver.core;
 
-import http.EmptyRequestException;
-import http.HttpServletRequest;
-import http.HttpServletResponse;
+import com.webserver.http.EmptyRequestException;
+import com.webserver.http.HttpServletRequest;
+import com.webserver.http.HttpServletResponse;
 
 import java.io.*;
 import java.net.Socket;

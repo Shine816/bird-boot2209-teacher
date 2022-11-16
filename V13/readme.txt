@@ -18,7 +18,7 @@
 
 为了解决这个问题，我们可以使用重定向。
 重定向是当我们处理完请求后，不直接响应一个页面，而是给浏览器回复一个路径，让其再次根据
-该路径发起请求。这样一来，无论用户如何刷新，请求的都是该路径。避免表达的重复提交。
+该路径发起请求。这样一来，无论用户如何刷新，请求的都是该路径。避免表单的重复提交。
 
 实现:
 在HttpServletResponse中定义一个方法:sendRedirect()
@@ -32,4 +32,11 @@
 1:在static下准备登录所需页面(与SpringBoot一致)
 2:在UserController中定义方法login
 3:实现登录逻辑(与SpringBoot项目一致)
-4:在DispatcherServlet中添加分支，判断请求路径是否为登录，如果是则调用UserController的login方法
+4:在DispatcherServlet中添加分支，判断请求路径是否为登录，
+  如果是则调用UserController的login方法
+
+
+
+
+
+

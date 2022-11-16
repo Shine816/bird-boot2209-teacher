@@ -24,3 +24,12 @@
 在HttpServletResponse中定义一个方法:sendRedirect()
 该方法中设置状态代码为302，并在响应头中包含Location指定需要浏览器重新发起请求的路径
 将原来Controller中内部跳转页面的操作全部改为重定向。
+
+
+
+独立练习部分:
+按照注册的流程实现用户登录功能
+1:在static下准备登录所需页面(与SpringBoot一致)
+2:在UserController中定义方法login
+3:实现登录逻辑(与SpringBoot项目一致)
+4:在DispatcherServlet中添加分支，判断请求路径是否为登录，如果是则调用UserController的login方法

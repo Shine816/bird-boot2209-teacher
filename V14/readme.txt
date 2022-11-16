@@ -117,3 +117,9 @@ UTF-8的规则
 "范"的标准unicode编码:10000011 00000011
 11101000 10001100 10000011
 E8       8C       83
+
+
+
+实现:
+在HttpServletRequest的parseURI方法中，在拆分出参数部分queryString后，使用
+JAVA的API提供的类:java.net.URLDecoder的decode方法转码

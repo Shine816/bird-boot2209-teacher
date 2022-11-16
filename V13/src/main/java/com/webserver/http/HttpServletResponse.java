@@ -115,4 +115,19 @@ public class HttpServletResponse {
     public void addHeader(String name,String value){
         headers.put(name,value);
     }
+
+    /**
+     * 重定向到指定路径
+     * 核心点:
+     * 1:状态代码为302
+     * 2:响应头Location:重定向路径
+     * @param location
+     */
+    public void sendRedirect(String location){
+        //1设置状态代码302
+        this.statusCode=302;
+        this.statusReason="Moved Temporarily";
+        //2设置响应头Location
+        addHeader("Location",location);
+    }
 }

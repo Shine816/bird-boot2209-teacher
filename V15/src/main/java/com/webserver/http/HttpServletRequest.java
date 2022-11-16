@@ -65,11 +65,16 @@ public class HttpServletRequest {
                 queryString = URLDecoder.decode(queryString,"UTF-8");
             } catch (UnsupportedEncodingException e) {
             }
-            String[] paraArray = queryString.split("&");
-            for(String para : paraArray){
-                String[] paras = para.split("=",2);
-                parameters.put(paras[0], paras[1]);
-            }
+            parseParameter(queryString);
+        }
+    }
+
+    //解析参数
+    private void parseParameter(String line){
+        String[] paraArray = line.split("&");
+        for(String para : paraArray){
+            String[] paras = para.split("=",2);
+            parameters.put(paras[0], paras[1]);
         }
     }
 
@@ -107,6 +112,7 @@ public class HttpServletRequest {
                 //正文就是一行字符串，内容是原GET形式提交后抽象路径中"?"后面内容
                 String line = new String(data, StandardCharsets.ISO_8859_1);
                 System.out.println("正文内容:"+line);
+                parseParameter(line);
             }
 //            后期可添加其他判断，比如含有附件的正文解析
 //            else if(){

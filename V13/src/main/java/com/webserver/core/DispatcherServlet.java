@@ -48,6 +48,9 @@ public class DispatcherServlet {
         if("/regUser".equals(path)){
             UserController controller = new UserController();
             controller.reg(request, response);
+        }else if("/xxxx".equals(path)){
+
+
         }else {
             File file = new File(staticDir, path);
             if (file.isFile()) {//判断请求的文件真实存在且确定是一个文件(不是目录)

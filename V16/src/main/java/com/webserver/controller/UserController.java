@@ -68,4 +68,9 @@ public class UserController {
         }
 
     }
+
+    @RequestMapping("/loginUser")
+    public void login(HttpServletRequest request,HttpServletResponse response){
+        System.out.println("开始处理登录!!!");
+    }
 }

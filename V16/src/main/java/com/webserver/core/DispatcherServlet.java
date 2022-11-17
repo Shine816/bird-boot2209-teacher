@@ -1,11 +1,15 @@
 package com.webserver.core;
 
+import com.webserver.annotations.Controller;
+import com.webserver.annotations.RequestMapping;
 import com.webserver.controller.UserController;
 import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
+import java.util.Collection;
 
 /**
  * DispatcherServlet实际是由SpringMVC框架提供的一个类，用于和Tomcat整合并负责
@@ -65,10 +69,34 @@ public class DispatcherServlet {
                     DispatcherServlet.class.getClassLoader()
                             .getResource("./com/webserver/controller").toURI()
             );
-
-        } catch (URISyntaxException e) {
+            File[] subs = dir.listFiles(f->f.getName().endsWith(".class"));
+            for(File sub : subs){
+                String fileName = sub.getName();
+                String className = fileName.substring(0,fileName.indexOf("."));
+                Class cls = Class.forName("com.webserver.controller."+className);
+                //是否为@Controller标注的类
+                if(cls.isAnnotationPresent(Controller.class)){
+                    Method[] methods = cls.getDeclaredMethods();
+                    for(Method method : methods){
+                        //是否该方法被@RequestMapping标注
+                        if(method.isAnnotationPresent(RequestMapping.class)){
+                            RequestMapping rm = method.getAnnotation(RequestMapping.class);
+                            String value = rm.value();
+                            //本次请求路径是否与该方法@RequestMapping注解中的参数一致
+                            if(path.equals(value)){
+                                Object obj = cls.newInstance();//实例化这个Controller
+                                method.invoke(obj,request,response);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+
         File file = new File(staticDir, path);
         if (file.isFile()) {//判断请求的文件真实存在且确定是一个文件(不是目录)
             response.setContentFile(file);

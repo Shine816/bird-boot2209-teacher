@@ -7,6 +7,7 @@ import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.util.Collection;
@@ -52,17 +53,28 @@ public class DispatcherServlet {
         String path = request.getRequestURI();
 
         //判断是否为请求业务
-
-
-
-        File file = new File(staticDir, path);
-        if (file.isFile()) {//判断请求的文件真实存在且确定是一个文件(不是目录)
-            response.setContentFile(file);
-        } else {//404情况
-            response.setStatusCode(404);
-            response.setStatusReason("NotFound");
-            file = new File(staticDir, "404.html");
-            response.setContentFile(file);
+        Method method = HandlerMapping.getMethod(path);
+        if(method!=null){
+            try {
+                //通过方法对象可以获取到该方法所属的类的类对象
+                Object obj = method.getDeclaringClass().newInstance();
+                method.invoke(obj,request,response);
+            } catch (Exception e) {
+                //若调用某个Controller的方法时出现了异常应当回复浏览器500错误
+                response.setStatusCode(500);
+                response.setStatusReason("Internal Server Error");
+                response.setContentFile(new File(staticDir,"500.html"));
+            }
+        }else {
+            File file = new File(staticDir, path);
+            if (file.isFile()) {//判断请求的文件真实存在且确定是一个文件(不是目录)
+                response.setContentFile(file);
+            } else {//404情况
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
+                file = new File(staticDir, "404.html");
+                response.setContentFile(file);
+            }
         }
         response.addHeader("Server", "BirdServer");
     }

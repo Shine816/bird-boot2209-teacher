@@ -60,17 +60,17 @@ public class HttpServletRequest {
         requestURI = data[0];
         if(data.length>1){
             queryString = data[1];
-            //为参数部分转码
-            try {
-                queryString = URLDecoder.decode(queryString,"UTF-8");
-            } catch (UnsupportedEncodingException e) {
-            }
             parseParameter(queryString);
         }
     }
 
     //解析参数
     private void parseParameter(String line){
+        //为参数部分转码
+        try {
+            line = URLDecoder.decode(line,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+        }
         String[] paraArray = line.split("&");
         for(String para : paraArray){
             String[] paras = para.split("=",2);

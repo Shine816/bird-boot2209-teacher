@@ -52,6 +52,14 @@ public class HandlerMapping {
         }
     }
 
+    /**
+     * 根据给定的请求路径获取对应的处理方法
+     * @param path  应当与某个Controller中的业务方法上@RequestMapping注解值一致
+     * @return  与path匹配的处理方法或null
+     */
+    public static Method getMethod(String path){
+        return mapping.get(path);
+    }
 
     public static void main(String[] args) {
         Method m = mapping.get("/regUser");

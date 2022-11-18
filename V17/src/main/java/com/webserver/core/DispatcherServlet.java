@@ -52,49 +52,7 @@ public class DispatcherServlet {
         String path = request.getRequestURI();
 
         //判断是否为请求业务
-        /*
-            当我们得到本次请求路径path的值后，我们首先要查看是否为请求业务:
-            1:扫描controller包下的所有类
-            2:查看哪些被注解@Controller标注的过的类(只有被该注解标注的类才认可为业务处理类)
-            3:遍历这些类，并获取他们的所有方法，并查看哪些时业务方法
-              只有被注解@RequestMapping标注的方法才是业务方法
-            4:遍历业务方法时比对该方法上@RequestMapping中传递的参数值是否与本次请求
-              路径path值一致?如果一致则说明本次请求就应当由该方法进行处理
-              因此利用反射机制调用该方法进行处理。
-            5:如果扫描了所有的Controller中所有的业务方法，均未找到与本次请求匹配的路径
-              则说明本次请求并非处理业务，那么执行下面请求静态资源的操作
-         */
-        try {
-            File dir = new File(
-                    DispatcherServlet.class.getClassLoader()
-                            .getResource("./com/webserver/controller").toURI()
-            );
-            File[] subs = dir.listFiles(f->f.getName().endsWith(".class"));
-            for(File sub : subs){
-                String fileName = sub.getName();
-                String className = fileName.substring(0,fileName.indexOf("."));
-                Class cls = Class.forName("com.webserver.controller."+className);
-                //是否为@Controller标注的类
-                if(cls.isAnnotationPresent(Controller.class)){
-                    Method[] methods = cls.getDeclaredMethods();
-                    for(Method method : methods){
-                        //是否该方法被@RequestMapping标注
-                        if(method.isAnnotationPresent(RequestMapping.class)){
-                            RequestMapping rm = method.getAnnotation(RequestMapping.class);
-                            String value = rm.value();
-                            //本次请求路径是否与该方法@RequestMapping注解中的参数一致
-                            if(path.equals(value)){
-                                Object obj = cls.newInstance();//实例化这个Controller
-                                method.invoke(obj,request,response);
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
 
         File file = new File(staticDir, path);

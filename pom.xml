@@ -27,7 +27,16 @@
         <module>V16</module>
         <module>V17</module>
         <module>V18</module>
+        <module>JDBC</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.15</version>
+        </dependency>
+    </dependencies>
 
     <properties>
         <!-- 设置 JDK 版本为 1.8 -->
